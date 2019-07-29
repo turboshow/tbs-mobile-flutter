@@ -9,7 +9,7 @@ class PlayerViewPlugin {
                 .platformViewRegistry()
                 .registerViewFactory(
                     "plugins.turboshow.cn/playerview",
-                    PlayerViewFactory(registrar.messenger()))
+                    PlayerViewFactory(registrar))
         }
     }
 }
