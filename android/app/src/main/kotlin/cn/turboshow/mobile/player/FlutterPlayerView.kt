@@ -1,15 +1,17 @@
 package cn.turboshow.mobile.player
 
+import android.app.Activity
 import android.content.Context
 import android.net.Uri
 import android.view.View
+import android.view.WindowManager
 import io.flutter.plugin.common.BinaryMessenger
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.platform.PlatformView
 import org.videolan.libvlc.util.VLCVideoLayout
 
 class FlutterPlayerView(
-    context: Context,
+    private val context: Context,
     messenger: BinaryMessenger,
     id: Int) : PlatformView {
     private val playerView = VLCVideoLayout(context)
@@ -17,6 +19,7 @@ class FlutterPlayerView(
     private val methodChannel = MethodChannel(messenger, "plugins.turboshow.cn/playerview_$id")
 
     init {
+        (context as Activity).window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         methodChannel.setMethodCallHandler { methodCall, result ->
             when (methodCall.method) {
                 "play" -> play(methodCall.arguments as String)
@@ -30,6 +33,7 @@ class FlutterPlayerView(
     }
 
     override fun dispose() {
+        (context as Activity).window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         player.release()
         methodChannel.setMethodCallHandler(null)
     }
