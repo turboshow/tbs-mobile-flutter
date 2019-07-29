@@ -7,13 +7,18 @@ import org.videolan.libvlc.MediaPlayer
 import org.videolan.libvlc.util.VLCVideoLayout
 
 class TBSPlayer(context: Context, private val videoView: VLCVideoLayout) {
-    private val libVLC = LibVLC(context, arrayListOf("--vout=android_display,none"))
+    private val libVLC = LibVLC(context, arrayListOf())
     private val player = MediaPlayer(libVLC)
 
     fun play(uri: Uri) {
-        player.attachViews(videoView, null, false, false)
-        player.videoScale = MediaPlayer.ScaleType.SURFACE_BEST_FIT
-        player.play(uri)
+        player.run {
+            videoScale = MediaPlayer.ScaleType.SURFACE_BEST_FIT
+            attachViews(videoView, null, false, false)
+            videoView.viewTreeObserver.addOnGlobalLayoutListener {
+                vlcVout.setWindowSize(videoView.width, videoView.height)
+            }
+            play(uri)
+        }
     }
 
     fun stop() {
@@ -24,5 +29,9 @@ class TBSPlayer(context: Context, private val videoView: VLCVideoLayout) {
     fun release() {
         player.release()
         libVLC.release()
+    }
+
+    companion object {
+
     }
 }
