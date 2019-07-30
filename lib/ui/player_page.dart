@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 class PlayerPage extends StatefulWidget {
   final String url;
 
-  PlayerPage(this.url) {}
+  PlayerPage(this.url);
 
   @override
   State<StatefulWidget> createState() {

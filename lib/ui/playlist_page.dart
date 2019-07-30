@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:tbs/model/channel.dart';
 import 'package:tbs/ui/player_page.dart';
 
