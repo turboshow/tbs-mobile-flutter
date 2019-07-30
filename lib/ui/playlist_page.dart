@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:tbs/model/channel.dart';
 import 'package:tbs/ui/player_page.dart';
 
@@ -38,11 +39,12 @@ class _State extends State<PlaylistPage> {
               return InkWell(
                 onTap: () => _openPlayerPage(channel.url),
                 child: ListTile(
+                  dense: false,
                   title: Text(channel.title),
                 ),
               );
             },
-            separatorBuilder: (_, __) => Divider(),
+            separatorBuilder: (_, __) => Divider(height: 0,),
             itemCount: _channels.length));
   }
 
