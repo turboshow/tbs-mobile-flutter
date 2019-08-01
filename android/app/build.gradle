@@ -21,6 +21,10 @@ if (flutterVersionName == null) {
     flutterVersionName = '1.0'
 }
 
+def genVersionCode = {
+    return (new Date().time / 1000).toInteger()
+}
+
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
@@ -40,9 +44,22 @@ android {
         applicationId "cn.turboshow.mobile"
         minSdkVersion 17
         targetSdkVersion 28
-        versionCode flutterVersionCode.toInteger()
-        versionName flutterVersionName
+        versionCode genVersionCode()
+        versionName '0.1.0'
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    signingConfigs {
+        release {
+            if (project.hasProperty('keyStoreFile')) {
+                storeFile file(keyStoreFile)
+            }
+            keyAlias "tbs"
+            if (project.hasProperty('releasePassword')) {
+                storePassword releasePassword
+                keyPassword releasePassword
+            }
+        }
     }
 
     buildTypes {
@@ -53,7 +70,7 @@ android {
         }
 
         release {
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
 
             ndk {
                 abiFilters 'armeabi-v7a'
